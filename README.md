@@ -1,6 +1,15 @@
 # concrete_inspection
-concrete crack inspection
-# Inspection of concrete structures
+
+# Author: 
+  Bouazzaoui Mohammed
+  Start of project : 20/6/2022
+  End of project : --/--/2022
+
+# Used technology
+	Deep Neural Network / convolutional neural networks  / Image processing
+
+
+# Application: Inspection of concrete structures
 
 ## Mission objectives
 
