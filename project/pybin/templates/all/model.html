@@ -1,0 +1,48 @@
+{% block body %}
+
+{% include 'navigator.html' %}
+
+{% endblock %}
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Select Model - Split Data Ratio - Balance Data</h1>
+
+<form action="/model_select/" method = "POST">
+  <p>Select Model:</p>
+  <input type="radio" id="model1" name="selected_model" value="linearregression" checked>
+  <label for="linearregression">LinearRegression</label><br>
+  <input type="radio" id="model2" name="selected_model" value="polynomial">
+  <label for="polynomial">PolynomialRegression</label><br>
+  <input type="radio" id="model3" name="selected_model" value="randomforest">
+  <label for="randomforest">RandomForest</label>
+
+  <br>  
+
+  <p>Select Data Split Ratio (%train):</p>
+  <input type="radio" id="ratio1" name="ratio" value="60">
+  <label for="ratio1">30</label><br>
+  <input type="radio" id="ratio2" name="ratio" value="70">
+  <label for="ratio2">70</label><br>  
+  <input type="radio" id="ratio3" name="ratio" value="80" checked>
+  <label for="ratio3">80</label><br><br>
+
+  <br>  
+
+  <p>Resampling Data:</p>
+  <input type="radio" id="balance1" name="balance" value="none" checked>
+  <label for="age1">None</label><br>
+  <input type="radio" id="balance2" name="balance" value="upsampling">
+  <label for="age2">UpSampling</label><br>
+  <input type="radio" id="balance3" name="balance" value="downsampling">
+  <label for="age3">DownSampling</label><br>  
+  <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
+
+
+

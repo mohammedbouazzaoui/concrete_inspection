@@ -1,0 +1,38 @@
+
+{% block body %}
+
+{% include 'navigator.html' %}
+
+{% endblock %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.container {
+  position: relative;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="center">
+    <h2></h2>
+    <h1>Server status:</h1>
+    <h3>______________</h3>
+    <h3></h3>
+    <h3>Alive and kicking!</h3>
+    <h3>Datetime  : {{dt}}</h3>
+    </div>
+    </div>
+</body>
+</html>

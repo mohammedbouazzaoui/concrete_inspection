@@ -1,0 +1,41 @@
+
+{% block body %}
+
+{% include 'navigator.html' %}
+
+{% endblock %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.container {
+  position: relative;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="center">
+    <h2></h2>
+    <h1>Used model info:</h1>
+    <h3>______________</h3>
+    <h3></h3>
+    {% for m in info %}
+      <tr>
+        <h4>{{m}}</h4>
+      </tr>
+    {% endfor %}
+    </div>
+    </div>
+</body>
+</html>

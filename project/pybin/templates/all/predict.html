@@ -1,0 +1,25 @@
+
+{% block body %}
+
+{% include 'navigator.html' %}
+
+{% endblock %}
+
+<html>
+<body>
+<form action="/predict_show/" method = "POST">
+       {% for m in columns %}
+                <tr>
+                <p> {{m}} <input type = "text" name = "{{m}}" /></p>
+            
+                </tr>
+        {% endfor %}
+  
+
+<br><br>
+<input type="submit" value="Predict price">
+</form>
+</body>
+</html>
+
+

@@ -1,0 +1,48 @@
+{% block body %}
+
+{% include 'navigator.html' %}
+
+{% endblock %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.container {
+  position: relative;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+
+</style>
+</head>
+<body>
+
+
+
+<div class="container">
+
+  <div class="center">
+<form action="/model_load_selected/" method = "POST">
+  <h2></h2>
+  <h2></h2>
+  <h2></h2>
+  <h1>Select and load a model</h1>
+  <h1>_______________________</h1>
+  <h4></h4>
+  <label for="myfile">Select a file:</label>
+  <input type="file" id="myfile" name="myfile"  accept=".model"><br><br>
+ 
+  <p><input type = "submit" value = "Activate" /></p>
+  </form>
+  </div>
+</div>
+
+</body>
+</html>

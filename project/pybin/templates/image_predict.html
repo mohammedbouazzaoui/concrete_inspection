@@ -1,0 +1,46 @@
+{% block body %}
+
+{% include 'navigator.html' %}
+
+{% endblock %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.container {
+  position: relative;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+
+</style>
+</head>
+<body>
+  <form action="/image_load/" method = "POST">
+    <div class="container">
+    
+          <div class="center">
+        
+          <h2></h2>
+        
+            <h1>Price prediction</h1>
+            <h1>________________</h1>
+            <h3></h3>
+            <h3>{{predict}}</h1>
+            <h3></h3>
+            <h3>Prediction = {{imagefile}}</h1>
+            <h3></h3>
+         
+          </div>
+      </div>
+    </form>
+</body>
+</html>

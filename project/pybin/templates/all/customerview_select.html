@@ -1,0 +1,21 @@
+
+{% block body %}
+
+{% include 'navigator.html' %}
+
+{% endblock %}
+
+<html>
+    <body>
+  
+        <h3>CUSTOMER VIEW SELECTED</h3>
+
+
+<form action="/predict/" method = "POST">
+        <h3>Press submit to predict</h3>
+  <input type="submit" value="Predict price">
+</form>
+
+
+</body>
+</html>

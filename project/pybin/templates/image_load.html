@@ -1,0 +1,47 @@
+{% block body %}
+
+{% include 'navigator.html' %}
+
+{% endblock %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.container {
+  position: relative;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="center">
+<form action="/image_predict/" method = "POST">
+  <h2></h2>
+  <h2></h2>
+  <h2></h2>
+  <h2>Select an image</h2>
+  <h1>_______________________</h1>
+  <h4></h4>
+  <label for="myfile">Select a file:</label>
+  <input type="file" id="myfile" name="myfile"  accept=".jpg,.png"><br><br>
+ 
+ 
+  <p><input type = "submit" value = "Predict" /></p>
+  </form>
+  </div>
+</div>
+
+</body>
+</html>

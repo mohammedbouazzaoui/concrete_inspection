@@ -1,0 +1,51 @@
+
+{% block body %}
+
+{% include 'navigator.html' %}
+
+{% endblock %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.container {
+  position: relative;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+
+</style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Model selection</h1>
+        <h1>_______________</h1>
+        <h1></h1>
+        <form action="/customerview_select/" method = "POST">
+          <label for="models">Select model:</label>
+              <select name="models" id="model">
+              
+                {% for m in modellist %}
+                    <tr>
+                    <option value={{m[0]}}>{{m[1]}}</option>
+                    </tr>
+                {% endfor %}
+              
+            
+              </select>
+              <br><br>
+          <input type="submit" value="Activate">
+        </form>
+     
+    </div>
+
+</body>
+</html>
