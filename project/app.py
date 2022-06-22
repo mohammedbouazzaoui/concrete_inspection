@@ -30,6 +30,7 @@ import autokeras as ak
 import tensorflow as tf
 from tensorflow import keras
 import cv2
+from werkzeug import secure_filename,FileStorage
 
 SIZE=16
 # example of loading an image with the Keras API
@@ -42,19 +43,44 @@ from flask import Flask, render_template, request
 
 from pybin.mylib.myfunctions import debug
 
+global modelfile
 np.random.seed(42)
 
-app = Flask(__name__, template_folder="/project/pybin/templates")
+
+#app = Flask(__name__, template_folder="/project/pybin/templates")
 
 # set DEBUG to 'True' to output debug information
-DEBUG = False
+DEBUG = True
+# set False for testing on local PC
+WEB = False
 
-global modelfile
+if WEB :
+    #imagefile = "./project/data/" + imagename
+    DIR_imagefile = "/project/data/"
+    #save_img("./project/static/imgtopredict.jpg", img)
+    DIR_save_img="/project/static/"
+    DIR_template_folder="/project/pybin/templates"
+    #modelfile = "./project/pybin/models/activemodel_best_trained2"
+    #modelfile = "C:/Users/bmadmin/Desktop/Octocat/mohammedbouazzaoui/concrete_inspection/project/activemodel"
+    DIR_modelfile = "/project/pybin/models/"
+else:
+    
+    DIR_imagefile = "./project/data/" 
+    DIR_save_img="./project/static/"
+    DIR_template_folder="./pybin/templates"
+    DIR_modelfile = "./project/pybin/models/"
+
+    debug(DEBUG, DIR_imagefile+DIR_save_img+DIR_template_folder+DIR_modelfile)
+
+
+app = Flask(__name__, template_folder=DIR_template_folder)
+
+#app = Flask(__name__, template_folder = DIR_template_folder)
 
 # get the active model
 #modelfile = "./project/pybin/models/activemodel_best_trained2"
 #modelfile = "C:/Users/bmadmin/Desktop/Octocat/mohammedbouazzaoui/concrete_inspection/project/activemodel"
-modelfile = "/project/pybin/models/activemodel_best_trained2"
+modelfile = DIR_modelfile + "activemodel_best_trained2"
 debug(DEBUG, modelfile)
 model = tf.keras.models.load_model(modelfile)
 debug(DEBUG, modelfile)
@@ -181,7 +207,7 @@ def image_predict():
         return render_template("image_load.html")
 
     #imagefile = "./project/data/" + imagename
-    imagefile = "/project/data/" + imagename
+    imagefile = DIR_imagefile + imagename
 
     debug(DEBUG, imagefile)
     #imagefile = "../concrete_inspection_dataset/SDNET2018/P/CP/001-100.jpg"
@@ -191,7 +217,7 @@ def image_predict():
     img = Image.open(imagefile)
     #image = load_img(imagefile)
     #save_img("./project/static/imgtopredict.jpg", img)
-    save_img("/project/static/imgtopredict.jpg", img)
+    save_img(DIR_save_img + "imgtopredict.jpg", img)
 
     img = np.asarray(img.resize((SIZE,SIZE)))
     
@@ -223,6 +249,32 @@ def roott():
     return render_template("image_load.html")
 
 
+@app.route('/upload/')
+def upload_file2():
+   return render_template('upload.html')
+	
+@app.route('/uploader/', methods = ['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save(secure_filename(f.filename))
+        '''
+        ########################
+            # load the image
+            img = Image.open(imagefile)
+            #image = load_img(imagefile)
+            #save_img("./project/static/imgtopredict.jpg", img)
+            save_img(DIR_save_img + "imgtopredict.jpg", img)
+            img = np.asarray(img.resize((SIZE,SIZE)))
+            predict = predictimage(img, model)
+            debug(DEBUG, predict)
+            return render_template(
+                "image_show_prediction.html", predict=predict, imagename=imagename
+        #####################
+        '''
+        return 'file uploaded successfully'
+		
+
 #######################################
 # Start the local webserver
 #######################################
@@ -236,6 +288,17 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=port, threaded=True, debug=True)
 '''
 
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
+
+
+
+if WEB:
+    if __name__ == '__main__':
+
+        app.config['UPLOAD_FOLDER']="/project/data"
+        app.config['MAX_CONTENT_PATH']=5000000
+
+        port = int(os.environ.get("PORT", 5000))
+        app.run(debug=True, host='0.0.0.0', port=port)
+else:
+    print("@@@@@@@@@@@@@@@@@@@@@DDDDDDDDDDDDDD")
+    app.run(host="localhost", port=5000, debug = True)
