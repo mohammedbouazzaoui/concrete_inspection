@@ -1,0 +1,26 @@
+###create image
+#docker build . -t concreteinspection
+
+###check image
+docker image ls
+
+###remove image
+#docker image rm <IMAGE_ID>
+#########################################
+
+#create and run a container
+docker run -t concreteinspection:latest
+
+###check container
+docker container ls
+docker container ls -a
+
+###remove a container
+#docker container rm cd585b842f8b
+
+###connect using ssh
+#docker run -it concreteinspection:latest bash
+#apt install vim -y
+
+###app configured for port 5000
+#docker run -d -p 5000:5000 concreteinspection:latest

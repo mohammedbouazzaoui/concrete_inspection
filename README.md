@@ -3,6 +3,9 @@
 ## Author: 
 
   Bouazzaoui Mohammed
+
+## Timeline:
+
   Start of project : 20/6/2022
   End of project : --/--/2022
 
@@ -11,7 +14,9 @@
 	Deep Neural Network / convolutional neural networks  / Image processing
 
 
+## TestLink to app
 
+https://concreteinspection.herokuapp.com/info/
 
 ## Mission objectives
 
