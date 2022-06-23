@@ -252,26 +252,72 @@ def roott():
 @app.route('/upload/')
 def upload_file2():
    return render_template('upload.html')
-	
+
+
+
+
+
+#################################################################
+import pathlib
+ALLOWED_EXTENSIONS = set(["jpg"])
+UPLOAD_FOLDER = pathlib.Path(__file__).parent / "static/uploads/"
+#KEYWORD_FILE = pathlib.Path(__file__).parent / "data/tax_keywords_nl.pkl"
+#DOCSCORES_FILE = pathlib.Path(__file__).parent / "data/tax_docscores_nl.pkl"
+#FILES = pathlib.Path(__file__).parent / "data/Staatsblad.pkl"
+
+
+#app = Flask(__name__)
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+# Check to see if file is allowed
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+
+###################################################
 @app.route('/uploader/', methods = ['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         f = request.files['file']
+        file=f
         f.save(secure_filename(f.filename))
-        '''
+        imagename = f.filename
+        '''    
         ########################
-            # load the image
-            img = Image.open(imagefile)
-            #image = load_img(imagefile)
-            #save_img("./project/static/imgtopredict.jpg", img)
-            save_img(DIR_save_img + "imgtopredict.jpg", img)
-            img = np.asarray(img.resize((SIZE,SIZE)))
-            predict = predictimage(img, model)
-            debug(DEBUG, predict)
-            return render_template(
-                "image_show_prediction.html", predict=predict, imagename=imagename
-        #####################
+        # load the image
+        imagename = f.filename
+        img = Image.open(f.filename)
+                #image = load_img(imagefile)
+                #save_img("./project/static/imgtopredict.jpg", img)
+                #save_img(DIR_save_img + "imgtopredict.jpg", img)
+        save_img("/project/data/imgtopredict.jpg",img)
+        img = np.asarray(img.resize((SIZE,SIZE)))
+        predict = predictimage(img, model)
+        debug(DEBUG, predict)
+        return render_template(
+            "image_show_prediction.html", predict=predict, imagename=imagename)
+        ########################################################
         '''
+        # IF the file is an allowed file
+        
+        # If there is no text & a file uploaded
+        #file = request.files["file"]
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            path = os.path.join(app.config["UPLOAD_FOLDER"] / filename)
+            print(f"path = {path}")
+            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            _file = open(os.path.join(app.config["UPLOAD_FOLDER"], filename), "rb")
+            content = _file.read()
+            img=content
+        img = np.asarray(img.resize((SIZE,SIZE)))
+        predict = predictimage(img, model)
+        debug(DEBUG, predict)
+        return render_template(
+            "image_show_prediction.html", predict=predict, imagename=imagename)
+        ######################################################
         return 'file uploaded successfully'
 		
 
