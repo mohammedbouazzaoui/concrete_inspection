@@ -24,20 +24,20 @@
 </style>
 </head>
 <body>
-  <form action="/image_load/" method = "POST">
+  <form action="/uploadfile/" method = "POST">
     <div class="container">
     
           <div class="center">
         
           <h3></h3>
-            <h2>{{predict}}</h2>
+            <h2>Predicted as : {{predict}}</h2>
             <h3></h3>
             <h3>image : {{imagename}}</h1>
             <p><input type = "submit" value = "Return" /></p>
             
             <img src="/static/imgtopredict.jpg">
             
-            <img src="{{url_for('static', filename='imgtopredict.png')}}">
+         
           </div>
       </div>
     </form>

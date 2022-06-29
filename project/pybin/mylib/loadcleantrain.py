@@ -27,7 +27,7 @@ import tensorflow
 
 
 def get_preprocessed_images(images_directory: str, image_size: tuple) -> list:
-    stop=100
+    stop=2000
     images = []
     for img in os.listdir(images_directory):
         img = image.load_img(images_directory+img, target_size=image_size)
@@ -44,7 +44,7 @@ def get_preprocessed_images(images_directory: str, image_size: tuple) -> list:
 
 ################################################################################
 def load_images():
-
+    print("in loadimages")
     SIZE=256
     image_size = (SIZE, SIZE)
 
@@ -59,10 +59,11 @@ def load_images():
     # Concatenate your images and your labels into X and y.
     X = np.concatenate([cracks_images,  non_cracks_images])
     y = np.concatenate([cracks_labels,  non_cracks_labels])
-
+    print("end of loadimages")
     return X, y
 ################################################################################
 def cleanup_img3(image_array):
+    #print("in cleanup_img3")
     #original_image_array = X[IMAGEPOINT] ### FILL IN ###
     original_image_array = image_array
 
@@ -107,14 +108,20 @@ def cleanup_img3(image_array):
 
     kernel = np.ones((2,2), np.uint8)
     resimage = cv2.erode(resimage, kernel, iterations=3)
+    #print("end cleanup_img3")
     return (resimage)
 
 ###############################################################################################
 # merge oiginal with edited image
 def merge_images(): 
+
+    print("in merge images")
     IMAGESIZE=256
     XRES=[]
+    #cnter=0
     for image_array in X:
+        #cnter+=1
+        #print("clean image",cnter)
         clean_image=cleanup_img3(image_array)
         XNEW = clean_image/255
 
@@ -129,6 +136,7 @@ def merge_images():
         XIM=cv2.resize(XIM, (244,244),interpolation=cv2.INTER_LINEAR)
         XRES.append(XIM)
     XRES = np.array(XRES)
+    
     return XRES
 
 
@@ -137,9 +145,9 @@ def merge_images():
 
 
 ### 
-def split_data():
+def split_data(XRES, y):
     
-
+    print("in split data")
     X_train_val, X_test, y_train_val, y_test = train_test_split(
         XRES, 
         y,
@@ -147,7 +155,8 @@ def split_data():
         random_state=42, 
         shuffle=True
     )
-
+    #FREE MEMORY
+    XRES=[]
     X_train, X_val, y_train, y_val = train_test_split(
         X_train_val, 
         y_train_val,
@@ -155,7 +164,8 @@ def split_data():
         random_state=42, 
         shuffle=True
     )
-    XRES.shape,X_train.shape,X_val.shape,y_train.shape,y_val.shape
+    print("ending split data")
+    #XRES.shape,X_train.shape,X_val.shape,y_train.shape,y_val.shape
 
     return X_train, y_train, X_val, y_val, X_test, y_test
     ######################################
@@ -164,7 +174,7 @@ def split_data():
 
 def model_MobileNetV2(model_save_file : str = './defaultmodelMNV2'):
 
-
+    print("ain mobilenetv2")
 
     # Determine the number of generated samples you want per original sample.
     datagen_batch_size = 16
@@ -173,14 +183,16 @@ def model_MobileNetV2(model_save_file : str = './defaultmodelMNV2'):
     train_datagen = ImageDataGenerator(rotation_range=60, horizontal_flip=True)
     train_generator = train_datagen.flow(X_train, y_train, batch_size=datagen_batch_size)
 
+    print("after training datagen")
     # Make a validation datagenerator object
     validation_datagen = ImageDataGenerator(rotation_range=60, horizontal_flip=True)
     validation_generator = validation_datagen.flow(X_val, y_val, batch_size=datagen_batch_size)
 
+    print("after validation datagen")
     ###############################################################################
 
 
-    X_train.shape, y_train.shape
+    #X_train.shape, y_train.shape
 
     # Import your chosen model!
 
@@ -224,13 +236,13 @@ def model_MobileNetV2(model_save_file : str = './defaultmodelMNV2'):
                         tf.keras.metrics.FalseNegatives()])
 
     ##################################################################
-
+    print("before fit")
     history = new_model.fit(train_generator,
-                            epochs=5,   #10
+                            epochs=10,   #10
                             batch_size=8,  #8
                             validation_data=validation_generator
                         )
-                        
+    print("before save")        
     new_model.save(model_save_file)
     return history
 
@@ -305,75 +317,64 @@ def predict(model_file, image_file:str):
         predic = "No_Crack"
         print("#### >>>> NOCRACK")
     # Show handsome rick.
-    plt.figure(figsize=(15,15))
+    #plt.figure(figsize=(15,15))
 
-    plt.imshow(original_image)
-    plt.show()
+    #plt.imshow(original_image)
+    #plt.show()
     return predic
 
 
-def predict2(model_file, x):
-    image_size = (224, 224)
-    new_model = keras.models.load_model(model_file)
-   
-    original_image = x
 
-    # Convert your image pixels to a numpy array of values .
-    #image_array = image.img_to_array(original_image)
-    image_array = x
 
-    # Reshape your image dimensions so that the colour channels correspond to what your model expects.
-    image_array = image_array.reshape((1, image_array.shape[0], image_array.shape[1], image_array.shape[2]))
-
-    # Preprocess your image with preprocess_input.
-    prepared_image = preprocess_input(image_array)
-
-    # Predict the class of your picture.
-    prediction = new_model.predict(prepared_image)
-
-    # Print out your result.
-    print(prediction)
-    if prediction[0][0] > prediction[0][1]:
-        predic = "Crack"
-        print("#222### >>>> CRACK")
-    else:
-        predic = "No_Crack"
-        print("#2222### >>>> NOCRACK")
-    # Show handsome rick.
-    plt.figure(figsize=(15,15))
-
-    plt.imshow(original_image)
-    plt.show()
-    return predic
 
 MODELLING = False
+#################
+DIR='C:/Users/bmadmin/Desktop/Octocat/mohammedbouazzaoui/concrete_inspection/project/'
+
 if MODELLING:
+    print("in modelling")
     X, y = load_images()
+    print("after load images")
+    #DEBUG
+    #input()
+     #ENDDEBUG
     XRES = merge_images()
-    X_train, y_train, X_val, y_val, X_test, y_test = split_data()
-    save_splitted_data(X_train, y_train, X_val, y_val, X_test, y_test)
-    history = model_MobileNetV2('C:/Users/bmadmin/Desktop/Octocat/mohammedbouazzaoui/concrete_inspection/project/static/defaultmodelMNV2')
+    print("after merge images")
+    #DEBUG
+    X=[]
+    #input()
 
+    #ENDDEBUG
+    
+    X_train, y_train, X_val, y_val, X_test, y_test = split_data(XRES, y)
+    #FREE MEMORY
+    XRES=[]
+    print("after split")
+    #save_splitted_data(X_train, y_train, X_val, y_val, X_test, y_test)
 
-    np.save('./defaultmodelMNV2_history2',history.history)
-    # Open a file and use dump()
-    #with open('C:/Users/bmadmin/Desktop/Octocat/mohammedbouazzaoui/concrete_inspection/project/static/defaultmodelMNV2_history.pkl', 'wb') as file:
-    #    pickle.dump(history, file)
-    #plot_history(history.history)
+    history = model_MobileNetV2(DIR+'pybin/models/defaultmodelMNV2')
+    print("after history")
+
+    np.save(DIR+'pybin/models/defaultmodelMNV2_history2',history.history)
+
 else:
 
     # loading
-    print("@@@afte01r")
-    historyz=np.load('./defaultmodelMNV2_history2.npy',allow_pickle='TRUE').item()
-    #with open('./defaultmodelMNV2_history.pkl', 'rb') as file:
-    #    history = pickle.load(file)
-    print("@@@afte1r")
-    print("@@@@@@@@@@@@",type(historyz),historyz)
-    plot_history(historyz)
-    print("@@@after2")
+    historyz=np.load(DIR+'pybin/models/defaultmodelMNV2_history2.npy',allow_pickle='TRUE').item()
 
-    predict(model_file = 'C:/Users/bmadmin/Desktop/Octocat/mohammedbouazzaoui/concrete_inspection/project/static/defaultmodelMNV2', image_file = "C:/Users/bmadmin/Desktop/Octocat/mohammedbouazzaoui/concrete_inspection/project/data/CCCC.jpg")
-###################################################################
+    plot_history(historyz)
+    
+    # TEST PREDICTION
+    #predict(model_file = DIR+'pybin/models/defaultmodelMNV2', image_file = DIR+'data/ZZZ4.jpg')
+    predict(model_file = DIR+'pybin/models/defaultmodelMNV2', image_file = DIR+'data/NOCRACK3.jpg')
+    #test_image = image.load_img(DIR+'data/ZZZ4.jpg')
+    test_image = image.load_img(DIR+'data/NOCRACK3.jpg')
+    plt.imshow(test_image)
+    plt.show()
+
+print("END###################################################################")
+
+''' 
     print("########################################################")
     X_train, y_train, X_val, y_val, X_test, y_test = load_splitted_data()
     print("@@@@@@@@@@@@@@@@@@@",X_test[0].shape)
@@ -398,8 +399,10 @@ else:
     # Show handsome rick.
     plt.figure(figsize=(15,15))
 
+    test_image = image.load_img("C:/Users/bmadmin/Desktop/Octocat/mohammedbouazzaoui/concrete_inspection/project/data/AAAA.jpg", target_size=image_size)
     plt.imshow(original_image)
     plt.show()
+''' 
 ###########
 ###
 ###  END
