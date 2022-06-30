@@ -20,7 +20,7 @@
 
 ## Link to app deployed on Heroku
 
-https://concreteinspection.herokuapp.com/info/
+(https://morning-shelf-46331.herokuapp.com/ | https://git.heroku.com/morning-shelf-46331.git)
 
 ![image](https://user-images.githubusercontent.com/98815410/176678383-3b418ac4-2fdb-435f-98bb-1c01baf35b48.png)
 
@@ -34,9 +34,9 @@ After this you will have access to the app locally using your webbrowser with:
 
 http://localhost:5000
 
-you can also access a deployed version of the app on Heroku using:
+you can also access a deployed version of the app on Heroku :
 
-https://concreteinspection.herokuapp.com/info/
+(https://morning-shelf-46331.herokuapp.com/ | https://git.heroku.com/morning-shelf-46331.git)
 
 
 ## Mission objectives
