@@ -3,7 +3,9 @@
 ## Author: 
 
   Bouazzaoui Mohammed
+  
   Junior Data Scientist @ Becode
+  
   https://www.linkedin.com/in/mbouazzaoui/
 
 ## Timeline:
@@ -29,9 +31,11 @@ Clone the git repo and create a docker using
 the instructions in file "create_docker_image.txt"
 This will allow you to create an docker image, run a container and start the app.
 After this you will have access to the app locally using your webbrowser with:
+
 http://localhost:5000
 
 you can also access the app on Heroku using:
+
 https://concreteinspection.herokuapp.com/info/
 
 
