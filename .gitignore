@@ -4,7 +4,8 @@ Stuff/
 project/notebook/image_classifier/
 project/pybin/models/
 *.backup
-
+project/notebook/
+project/pybin/mylib/loadcleantrain.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

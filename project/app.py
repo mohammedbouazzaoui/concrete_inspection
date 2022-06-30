@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-
-MVP for the 'Inspection of concrete structures' project
-#######################################################
+#########################################################
+# MVP for the 'Inspection of concrete structures' project
+#########################################################
 @author: Bouazzaoui Mohammed
 Created on : 20/6/2022
 
@@ -10,37 +10,27 @@ Created on : 20/6/2022
 
 import os
 import io
-
 import numpy as np
 import pandas as pd
-
 from glob import glob
 from PIL import Image
-
 import matplotlib.pyplot as plt
 import seaborn as sns
-
 from werkzeug.utils import secure_filename
-
-# example of loading an image with the Keras API
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from keras.utils.np_utils import to_categorical
-
 from sklearn.model_selection import train_test_split
 from scipy import stats
 from sklearn.preprocessing import LabelEncoder
 import autokeras as ak
-
 import tensorflow as tf
 from tensorflow import keras
 import cv2
 
-
-
+# PixelSize and Size of images
 SIZE=64
 IMGSIZE = (224,224)
-#IMGSIZE = (64,64)
 
 # example of loading an image with the Keras API
 from tensorflow.keras.preprocessing.image import load_img
@@ -54,10 +44,8 @@ from pybin.mylib.myfunctions import debug
 
 np.random.seed(42)
 
-
 FILE_model =  "./project/static/ActiveModel"
 FILE_imgtopredict = "./project/static/imgtopredict.jpg"
-
 
 app = Flask( __name__, template_folder= "./pybin/templates/", static_folder =  "./static/" )
 
@@ -66,7 +54,6 @@ DEBUG = False
 
 global modelfile
 
- 
 if os.path.isdir("./project/static"): 
     FILE_model =  "./project/static/ActiveModel"
     FILE_imgtopredict = "./project/static/imgtopredict.jpg"
@@ -74,15 +61,11 @@ else:
     FILE_model =  "./static/ActiveModel"
     FILE_imgtopredict = "./static/imgtopredict.jpg"
 
- 
-
-
 # get the active model
 modelfile = FILE_model
 debug(DEBUG, modelfile)
 model = tf.keras.models.load_model(modelfile)
 
-##############################################
 # Defining upload folder path
 UPLOAD_FOLDER = os.path.join('static', 'uploads')
 # # Define allowed files
@@ -93,9 +76,14 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
  
 # Define secret key to enable session
 app.secret_key = 'This is your secret key to utilize session in Flask'
-######################################################################################## 
+
 
 def predict(model_file, image_file:str):
+    # Function : will predict using model and an imagefile
+    #
+    # Input :  
+    # Return : render_template 
+    
     image_size = IMGSIZE
     new_model = keras.models.load_model(model_file)
    
@@ -123,10 +111,19 @@ def predict(model_file, image_file:str):
 
 @app.route("/uploadfile/", methods=["POST", "GET"])
 def index():
+    # Function : will render_template
+    #
+    # Input :  
+    # Return : render_template 
     return render_template('index_upload_and_display_image.html')
  
 @app.route("/uploadpredict/", methods=["POST", "GET"])
 def uploadpredict():
+    # Function : will return prediction
+    #
+    # Input :  
+    # Return : render_template 
+
     if request.method == 'POST':
         # Upload file flask
         uploaded_img = request.files['uploaded-file']
@@ -159,7 +156,7 @@ def uploadpredict():
 
 @app.route("/info/", methods=["POST", "GET"])
 def info():
-    # Function will return the model information
+    # Function : will return the model information
     #
     # Input :  
     # Return : render_template 
@@ -175,7 +172,6 @@ def info():
 
     return render_template("info.html", info=info)
 
-
 @app.route("/", methods=["POST", "GET"])
 def roott():
     # Function : dummy just show main screen
@@ -184,7 +180,6 @@ def roott():
     # Return : render_template 
     #
     return render_template("index_upload_and_display_image.html")
-
 
 #################
 # Start the app
