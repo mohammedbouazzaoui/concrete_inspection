@@ -6,6 +6,7 @@ project/pybin/models/
 *.backup
 project/notebook/
 project/pybin/mylib/loadcleantrain.py
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
