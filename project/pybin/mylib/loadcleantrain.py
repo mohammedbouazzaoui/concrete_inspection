@@ -19,12 +19,8 @@ import numpy as np
 import os
 import cv2
 
-
 from matplotlib import pyplot as plt
 import tensorflow
-
-
-
 
 def get_preprocessed_images(images_directory: str, image_size: tuple) -> list:
     stop=2000
@@ -172,7 +168,7 @@ def split_data(XRES, y):
 
 
 
-def model_MobileNetV2(model_save_file : str = './defaultmodelMNV2'):
+def model_MobileNetV2(model_save_file : str = './project/static/ActiveModel'):
 
     print("ain mobilenetv2")
 
@@ -238,12 +234,13 @@ def model_MobileNetV2(model_save_file : str = './defaultmodelMNV2'):
     ##################################################################
     print("before fit")
     history = new_model.fit(train_generator,
-                            epochs=10,   #10
+                            epochs=60,   #10
                             batch_size=8,  #8
                             validation_data=validation_generator
                         )
     print("before save")        
     new_model.save(model_save_file)
+    np.save('./project/static/history',history.history)
     return history
 
 
@@ -352,7 +349,7 @@ if MODELLING:
     print("after split")
     #save_splitted_data(X_train, y_train, X_val, y_val, X_test, y_test)
 
-    history = model_MobileNetV2(DIR+'pybin/models/defaultmodelMNV2')
+    history = model_MobileNetV2()
     print("after history")
 
     np.save(DIR+'pybin/models/defaultmodelMNV2_history2',history.history)

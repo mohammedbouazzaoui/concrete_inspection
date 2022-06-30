@@ -1,5 +1,9 @@
+#You must have Docker set up locally to continue. 
+#You should see output when you run this command.
+docker ps
+
 ###create image
-#docker build . -t concreteinspection
+docker build . -t concreteinspection
 
 ###check image
 docker image ls
@@ -22,5 +26,8 @@ docker container ls -a
 #docker run -it concreteinspection:latest bash
 #apt install vim -y
 
-###app configured for port 5000
-#docker run -d -p 5000:5000 concreteinspection:latest
+### run the app with access trough port 5000
+docker run -d -p 5000:5000 concreteinspection:latest
+
+# Now you can access the app using the webbrowser
+http://localhost:5000

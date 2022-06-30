@@ -3,20 +3,35 @@
 ## Author: 
 
   Bouazzaoui Mohammed
+  Junior Data Scientist @ Becode
+  https://www.linkedin.com/in/mbouazzaoui/
 
 ## Timeline:
 
   Start of project : 20/6/2022
-  End of project : --/--/2022
+  End of project : 30/06/2022
 
 ## Used technology
 
 	Deep Neural Network / convolutional neural networks  / Image processing
 
 
-## TestLink to app
+## Link to app deployed on Heroku
 
 https://concreteinspection.herokuapp.com/info/
+
+
+## Usage
+
+Clone the git repo and create a docker using
+the instructions in file "create_docker_image.txt"
+This will allow you to create an docker image, run a container and start the app.
+After this you will have access to the app locally using your webbrowser with:
+http://localhost:5000
+
+you can also access the app on Heroku using:
+https://concreteinspection.herokuapp.com/info/
+
 
 ## Mission objectives
 
@@ -49,9 +64,8 @@ Different approaches can be taken depending on what you are aiming to achieve.
 
 Different datasets are available from research institutions worldwide, you should select the necessary information according to your project objectives.
 
-- [Institute of Electrical and Electronics Engineers](https://ieee-dataport.org/documents/elci-edge-based-labeled-crack-image#files)
 - [Utah University SDNET2018](https://digitalcommons.usu.edu/all_datasets/48/)
-- [Pang-jo Chun](https://sites.google.com/view/pchun/)
+
 
 ## Technical Evaluation criteria
 
@@ -63,10 +77,5 @@ Different datasets are available from research institutions worldwide, you shoul
 - Appropiate metrics were used to evaluate the model.
 
 
-## A final note of encouragement
 
-_The imperial vastness of late Roman architecture was made possible by the invention of concrete._
--Iain McGilchrist
-
-How far could we go now with the application of AI ?
 

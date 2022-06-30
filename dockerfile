@@ -17,7 +17,9 @@ RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN apt-get install iputils-ping -y
 RUN apt-get install net-tools -y
+RUN apt-get install vim -y
 COPY ./project /project
+COPY ./static  /static 
 WORKDIR /project
 CMD ["python", "app.py"]
 EXPOSE 5000
