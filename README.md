@@ -20,7 +20,7 @@
 
 ## Link to app deployed on Heroku
 
-https://dashboard.heroku.com/apps/concreteinspection
+https://concreteinspection.herokuapp.com/info/
 
 ![image](https://user-images.githubusercontent.com/98815410/176678383-3b418ac4-2fdb-435f-98bb-1c01baf35b48.png)
 
@@ -36,7 +36,7 @@ http://localhost:5000
 
 you can also access a deployed version of the app on Heroku :
 
-https://dashboard.heroku.com/apps/concreteinspection
+https://concreteinspection.herokuapp.com/info/
 
 
 ## Mission objectives
