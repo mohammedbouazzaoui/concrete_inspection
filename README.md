@@ -64,7 +64,7 @@ Different approaches can be taken depending on what you are aiming to achieve.
 
 ### Data
 
-Different datasets are available from research institutions worldwide, you should select the necessary information according to your project objectives.
+Different datasets are available from research institutions worldwide, we selected the following dataset:
 
 - [Utah University SDNET2018](https://digitalcommons.usu.edu/all_datasets/48/)
 
