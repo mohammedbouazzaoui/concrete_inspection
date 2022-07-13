@@ -25,16 +25,18 @@ import numpy as np
 import os
 import cv2
 from matplotlib import pyplot as plt
-import tensorflow
+#import tensorflow
 
 def get_preprocessed_images(images_directory: str, image_size: tuple) -> list:
+    ###########################################################
     # Function : get_preprocessed_images
     #
-    # Input :  
-    # Return :   
+    # Input :  image directory, image size 
+    # Return :  List of images
+    # ########################################################### 
 
     # Max number of images to load
-    stop=2000
+    stop=200
     images = []
     for img in os.listdir(images_directory):
         img = image.load_img(images_directory+img, target_size=image_size)
@@ -49,16 +51,17 @@ def get_preprocessed_images(images_directory: str, image_size: tuple) -> list:
         print(stop)
     return np.vstack(images)
 
-def load_images():
+def load_images() -> tuple:
+    ###########################################################
     # Function : load_images
     #
-    # Input :  
-    # Return :   
-    
+    # Input :  None
+    # Return :   list X, list y
+    ############################################################
     SIZE=256
     image_size = (SIZE, SIZE)
 
-    # Load your images and preprocess them.
+    # Load images and preprocess them.
     cracks_images = get_preprocessed_images("C:/Users/bmadmin/Desktop/Octocat/mohammedbouazzaoui/concrete_inspection_dataset/SDNET2018/X/CX/", image_size)
     non_cracks_images = get_preprocessed_images("C:/Users/bmadmin/Desktop/Octocat/mohammedbouazzaoui/concrete_inspection_dataset/SDNET2018/X/UX/", image_size)
 
@@ -73,10 +76,12 @@ def load_images():
     return X, y
 
 def cleanup_img3(image_array):
+    ############################################################
     # Function : cleanup_img3
     #
     # Input :  
     # Return :   
+    ############################################################
     
     original_image_array = image_array
 
@@ -113,7 +118,8 @@ def cleanup_img3(image_array):
     FILTERDOTLOWER=FILTERDOTUPPER/5
 
     for i in range(0, nlabels - 1):
-        if sizes[i] >= FILTERDOTLOWER and sizes[i] <= FILTERDOTUPPER:   #filter small dotted regions
+        #filter out small dotted regions
+        if sizes[i] >= FILTERDOTLOWER and sizes[i] <= FILTERDOTUPPER:   
             img2[labels == i + 1] = 255
             
     resimage = cv2.bitwise_not(img2)
@@ -123,11 +129,13 @@ def cleanup_img3(image_array):
     resimage = cv2.erode(resimage, kernel, iterations=3)
     return (resimage)
 
-def merge_images(): 
-    # Function : merge_images
+def merge_images(X: list) -> list: 
+    ############################################################
+    # Function : merge_images will merge original image with crack_image
     #
-    # Input :  
-    # Return :   
+    # Input :  List of images
+    # Return :   List of image array
+    ############################################################
     
     IMAGESIZE=256
     XRES=[]
@@ -150,11 +158,13 @@ def merge_images():
     
     return XRES
  
-def split_data(XRES, y):
-    # Function : split_data
+def split_data(XRES, y) -> list:
+    ############################################################
+    # Function : split_data 
     #
-    # Input :  
-    # Return :   
+    # Input :  XRES, y
+    # Return :   X_train, y_train, X_val, y_val, X_test, y_test
+    ############################################################
     
     X_train_val, X_test, y_train_val, y_test = train_test_split(
         XRES, 
@@ -175,11 +185,13 @@ def split_data(XRES, y):
 
     return X_train, y_train, X_val, y_val, X_test, y_test
 
-def model_MobileNetV2(model_save_file : str = './project/static/ActiveModel'):
+def model_MobileNetV2(model_save_file : str = './project/static/ActiveModel')  -> list:
+    ############################################################
     # Function : model_MobileNetV2
     #
-    # Input :  
-    # Return :   
+    # Input :  File name for saving the model
+    # Return :   history of training the model
+    ############################################################
     
     # Determine the number of generated samples you want per original sample.
     datagen_batch_size = 16
@@ -213,14 +225,13 @@ def model_MobileNetV2(model_save_file : str = './project/static/ActiveModel'):
     new_model.summary()
 
     # Compile and fit the model. 
-
     new_model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
                 loss=tf.keras.losses.BinaryCrossentropy(),
                 metrics=[tf.keras.metrics.BinaryAccuracy(),
                         tf.keras.metrics.FalseNegatives()])
 
     history = new_model.fit(train_generator,
-                            epochs=60,   #10
+                            epochs=10,   #10
                             batch_size=8,  #8
                             validation_data=validation_generator
                         )    
@@ -229,11 +240,13 @@ def model_MobileNetV2(model_save_file : str = './project/static/ActiveModel'):
     return history
 
 
-def load_splitted_data():
+def load_splitted_data() -> None:
+    ############################################################
     # Function : load_splitted_data
     #
-    # Input :  
-    # Return :   
+    # Input :  None
+    # Return :   X_train, y_train, X_val, y_val, X_test, y_test
+    ############################################################
     
     with open("./splitted_data_container", "rb") as fp:   # Unpickling
         container = pickle.load(fp)
@@ -245,21 +258,25 @@ def load_splitted_data():
     y_test   = container[5]
     return X_train, y_train, X_val, y_val, X_test, y_test
 
-def save_splitted_data(X_train, y_train, X_val, y_val, X_test, y_test):
+def save_splitted_data(X_train, y_train, X_val, y_val, X_test, y_test) -> None:
+    ############################################################
     # Function : save_splitted_data
     #
-    # Input :  
-    # Return :   
+    # Input :  X_train, y_train, X_val, y_val, X_test, y_test
+    # Return :   None
+    ############################################################
     
     container=[X_train, y_train, X_val, y_val, X_test, y_test]
     with open("./splitted_data_container", "wb") as fp:   #Pickling
         pickle.dump(container, fp)
  
-def plot_history(history):
+def plot_history(history: list) -> None:
+    ############################################################
     # Function : plot_history
     #
-    # Input :  
-    # Return :   
+    # Input :  history
+    # Return :   None
+    ############################################################
     
     fig, axs = plt.subplots(1,3, figsize=(22,6))
     axs[0].plot(history['binary_accuracy'], label='training')
@@ -278,11 +295,13 @@ def plot_history(history):
     axs[2].legend(loc='lower right')
     plt.show()
 
-def predict(model_file, image_file:str):
+def predict(model_file: str, image_file: str) -> str:
+    ############################################################
     # Function : predict
     #
-    # Input :  
-    # Return :   
+    # Input :  model_file: str, image_file:str
+    # Return :   prediction string
+    ############################################################
     
     image_size = (224, 224)
     new_model = keras.models.load_model(model_file)
@@ -307,27 +326,26 @@ def predict(model_file, image_file:str):
     return predic
 
 
-
-
 # MAIN
 ########
 
 # Set this parameter to 'True' if you want to train the model , 'False' if you want to do a testprediction
-######################################################################################################
+##########################################################################################################
 # 'True' will overwrite the model !
 
-MODELLING = False
+MODELLING = True
 #################
 
 DIR='C:/Users/bmadmin/Desktop/Octocat/mohammedbouazzaoui/concrete_inspection/project/'
 
 if MODELLING:
     print("in modelling")
-    X, y = load_images()
-    print("after load images")
 
-    XRES = merge_images()
-    print("after merge images")
+    #load images
+    X, y = load_images()
+    
+    #merge original  image with crack_image
+    XRES = merge_images(X)
 
     #FREE MEMORY
     X=[]
@@ -337,7 +355,7 @@ if MODELLING:
 
     history = model_MobileNetV2()
 
-    np.save(DIR+'pybin/models/ActiveModel',history.history)
+    np.save(DIR+'pybin/models/ActiveModel2',history.history)
 
 else:
 
@@ -346,7 +364,7 @@ else:
     plot_history(historyz)
     
     # TEST PREDICTION
-    predict(model_file = DIR+'pybin/models/ActiveModel', image_file = DIR+'data/CRACK_TEST.jpg')
+    predict(model_file = DIR+'pybin/models/ActiveModel2', image_file = DIR+'data/CRACK_TEST.jpg')
     test_image = image.load_img(DIR+'data/CRACK_TEST.jpg')
     plt.imshow(test_image)
     plt.show()

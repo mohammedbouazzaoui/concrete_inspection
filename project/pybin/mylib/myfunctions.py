@@ -7,6 +7,12 @@ Created on Thu May  5 09:52:11 2022
 
 
 def debug(DEBUG, m):
-    # print debugger information on terminal
+    ############################################################
+    # Function : debug, prints debugger information on terminal
+    #
+    # Input :  Flag, Message
+    # Return :   Message
+    ############################################################    
+    
     if DEBUG:
         print("\nDEBUG@@@:---", m, "---@@@\n")
